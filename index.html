@@ -275,10 +275,11 @@
                     setAiResult(aiText);
                     saveToDb(aiText);
                 } catch (error) {
-                    const fallbackText = lang === 'ru' ? "Произошла техническая ошибка. Но ваши ответы сохранены! Напишите мне в WhatsApp для получения разбора." : "Техникалық қате орын алды. Бірақ сіздің жауаптарыңыз сақталды! Талдау алу үшін маған WhatsApp-қа жазыңыз.";
-                    setAiResult(fallbackText);
-                    saveToDb(fallbackText);
-                } finally {
+    // Выводим реальную ошибку, чтобы понять, в чем проблема
+    const errorMessage = "Ошибка: " + error.message; 
+    setAiResult(errorMessage); 
+    saveToDb(errorMessage);
+} finally {
                     setIsLoading(false);
                 }
             };
