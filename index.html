@@ -256,18 +256,20 @@
                 `;
 
                 try {
-                    // Защита ключа от блокировки GitHub (ключ разделен на две части)
-                    const apiKeyPart1 = "AIzaSyDkiPbftyF";
-                    const apiKeyPart2 = "3M7zleraLX1kKpUCySogNFl4";
-                    const activeKey = apiKeyPart1 + apiKeyPart2;
+    // ключті браузер жадынан аламыз
+    const activeKey = localStorage.getItem('my_ai_key');
+    
+    if (!activeKey) {
+        throw new Error("api ключ табылмады");
+    }
 
-                    const data = await fetchWithBackoff(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }]
-                        })
-                    });
+    const data = await fetchWithBackoff(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }]
+        })
+    });
                     
                     let aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || (lang === 'ru' ? "Система временно недоступна. Пожалуйста, напишите мне в WhatsApp, и я проведу разбор лично!" : "Жүйе уақытша қолжетімсіз. Маған WhatsApp-қа жазыңыз, мен сізге жеке талдау жасаймын!");
                     setAiResult(aiText);
