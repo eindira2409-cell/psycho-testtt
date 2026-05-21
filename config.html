@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#F2F2F7] flex items-center justify-center min-h-screen p-6">
+    <div class="bg-white p-8 rounded-[24px] shadow-lg w-full max-w-sm">
+        <h1 class="text-xl font-bold mb-4 text-center">Настройка доступа к ИИ</h1>
+        <p class="text-gray-500 mb-6 text-sm text-center">Введите API-ключ, чтобы сайт мог делать разбор.</p>
+        
+        <input id="keyInput" type="password" 
+               class="w-full bg-gray-100 p-4 rounded-[16px] mb-6 focus:ring-2 focus:ring-blue-500 outline-none" 
+               placeholder="Вставьте API-ключ">
+        
+        <button onclick="saveKey()" 
+                class="w-full py-4 bg-[#007AFF] text-white rounded-[16px] font-bold shadow-lg">
+            Сохранить ключ
+        </button>
+        
+        <div id="status" class="mt-4 text-center text-sm font-medium"></div>
+    </div>
+
+    <script>
+        function saveKey() {
+            const key = document.getElementById('keyInput').value;
+            if(key) {
+                localStorage.setItem('my_ai_key', key);
+                document.getElementById('status').innerText = "Ключ успешно сохранен!";
+                document.getElementById('status').className = "mt-4 text-center text-sm font-medium text-green-600";
+            } else {
+                alert("Пожалуйста, введите ключ");
+            }
+        }
+    </script>
+</body>
+</html>
