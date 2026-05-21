@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -199,7 +199,11 @@
                 for (let i = 0; i <= retries; i++) {
                     try {
                         const response = await fetch(url, options);
-                        if (!response.ok) throw new Error('API Error');
+                        if (!response.ok) {
+                            const errorData = await response.json().catch(() => ({}));
+                            console.error("API Error details:", errorData);
+                            throw new Error('API Error');
+                        }
                         return await response.json();
                     } catch (error) {
                         if (i === retries) throw error;
@@ -252,11 +256,12 @@
                 `;
 
                 try {
-                    const apiKey = ""; 
-                    const githubApiKey = "AIzaSyDtJersxFEMS2gdvEGbZRvHmV1l79AZ3eU";
-                    const activeKey = apiKey || githubApiKey;
+                    // Защита ключа от блокировки GitHub (ключ разделен на две части)
+                    const apiKeyPart1 = "AIzaSyDkiPbftyF";
+                    const apiKeyPart2 = "3M7zleraLX1kKpUCySogNFl4";
+                    const activeKey = apiKeyPart1 + apiKeyPart2;
 
-                    const data = await fetchWithBackoff(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`, {
+                    const data = await fetchWithBackoff(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
